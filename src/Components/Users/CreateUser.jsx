@@ -202,7 +202,7 @@ const CreateUser = () => {
           <h4>Lista de Usuarios</h4>
           <ul>
             {users.map((user, index) => (
-              <li key={user.id || index}>  {/* Usamos el `id` si está disponible, si no, usamos el índice */}
+              <li key={user.id || index}>  
                 <span>{user.username} - {user.is_admin === 1 ? "Administrador" : "Usuario"}</span>
                 <Button
                   icon="pi pi-pencil"

@@ -13,7 +13,7 @@ const UserContainer = () => {
       setLoading(true);
       const response = await fetch("http://127.0.0.1:5000/users", {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,  
         },
       });
       const data = await response.json();
@@ -33,7 +33,6 @@ const UserContainer = () => {
 
   return (
     <div className="container">
-
       {isAdmin ? (
         <>
           {loading ? (
