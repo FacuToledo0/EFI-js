@@ -161,7 +161,7 @@ const Accesorios = () => {
                       <Button
                         label="Editar"
                         icon="pi pi-pencil"
-                        className="custom-soft-yellow-button"
+                        className="custom-navy-blue-button"
                         onClick={() => handleEditar(accesorio.id)}
                       />
                       <Button

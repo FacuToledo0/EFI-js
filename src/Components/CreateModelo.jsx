@@ -159,7 +159,7 @@ const Modelos = () => {
                       <Button
                         label="Editar"
                         icon="pi pi-pencil"
-                        className="custom-soft-yellow-button"
+                        className="custom-navy-blue-button"
                         onClick={() => handleEditar(modelo.id)}
                       />
                       <Button

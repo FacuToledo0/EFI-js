@@ -206,7 +206,7 @@ const CreateUser = () => {
                 <span>{user.username} - {user.is_admin === 1 ? "Administrador" : "Usuario"}</span>
                 <Button
                   icon="pi pi-pencil"
-                  className="custom-soft-yellow-button"
+                  className="custom-navy-blue-button"
                   onClick={() => handleEditar(user.id)}
                   label="Editar"
                 />
