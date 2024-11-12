@@ -3,8 +3,8 @@ import * as Yup from "yup";
 import { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 
-const Accesorios = () => {
-  const [accesorios, setAccesorios] = useState([]);
+const Marcas = () => {
+  const [marcas, setMarcas] = useState([]);
   const [editing, setEditing] = useState(null);
   const [message, setMessage] = useState("");
   const token = localStorage.getItem("token");
@@ -18,89 +18,89 @@ const Accesorios = () => {
       .max(50, "No debe ser mayor a 50 caracteres"),
   });
 
-  // Función para obtener los accesorios
-  const fetchAccesorios = async () => {
+  // Función para obtener las marcas
+  const fetchMarcas = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/accesorio_list", {
+      const response = await fetch("http://127.0.0.1:5000/marca_list", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` }, // Token de autorización
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.Mensaje || "Error desconocido al obtener los accesorios");
+        throw new Error(errorData.Mensaje || "Error desconocido al obtener las marcas");
       }
 
       const data = await response.json();
-      setAccesorios(data.accesorios);
+      setMarcas(data.marcas);
     } catch (error) {
-      console.error("Error al obtener los accesorios:", error);
-      setMessage("Error al obtener accesorios: " + error.message); // Mostrar error
+      console.error("Error al obtener las marcas:", error);
+      setMessage("Error al obtener marcas: " + error.message); // Mostrar error
     }
   };
 
   useEffect(() => {
-    fetchAccesorios();
+    fetchMarcas();
   }, []);
 
-  // Función para guardar o editar un accesorio
+  // Función para guardar o editar una marca
   const handleGuardar = async (values, { resetForm }) => {
     try {
       const url = editing
-        ? `http://127.0.0.1:5000/accesorio/${editing}/editar`  // Edición
-        : "http://127.0.0.1:5000/accesorio";  // Creación
+        ? `http://127.0.0.1:5000/marca/${editing}/editar`  // Edición
+        : "http://127.0.0.1:5000/marca";  // Creación
 
       const method = editing ? "PUT" : "POST";
 
-      // Enviamos el nombre del accesorio como tipo_accesorio
+      // Enviamos el nombre de la marca
       const response = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,  // Asegúrate de pasar el token correctamente
         },
-        body: JSON.stringify({ tipo_accesorio: values.nombre }),  // Usamos 'tipo_accesorio' para coincidir con el backend
+        body: JSON.stringify({ nombre: values.nombre }),  // Usamos 'nombre' para coincidir con el backend
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.Mensaje || "Error desconocido al guardar el accesorio");
+        throw new Error(errorData.Mensaje || "Error desconocido al guardar la marca");
       }
 
-      // Limpiar el formulario y actualizar la lista de accesorios
+      // Limpiar el formulario y actualizar la lista de marcas
       setEditing(null);
-      fetchAccesorios();  // Refresca la lista
+      fetchMarcas();  // Refresca la lista
       resetForm();
-      setMessage("Accesorio guardado exitosamente.");
+      setMessage("Marca guardada exitosamente.");
     } catch (error) {
-      console.error("Error al guardar el accesorio:", error);
-      setMessage("Error al guardar el accesorio: " + error.message);  // Mostrar mensaje de error
+      console.error("Error al guardar la marca:", error);
+      setMessage("Error al guardar la marca: " + error.message);  // Mostrar mensaje de error
     }
   };
 
-  // Función para editar un accesorio
+  // Función para editar una marca
   const handleEditar = (id) => {
     setEditing(id);
   };
 
-  // Función para eliminar un accesorio
+  // Función para eliminar una marca
   const handleEliminar = async (id) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/accesorio/${id}/borrar`, {
+      const response = await fetch(`http://127.0.0.1:5000/marca/${id}/delete`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },  // Token de autorización
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.Mensaje || "Error al eliminar accesorio");
+        throw new Error(errorData.Mensaje || "Error al eliminar marca");
       }
 
-      fetchAccesorios();  // Refresca la lista de accesorios
-      setMessage("Accesorio eliminado exitosamente.");
+      fetchMarcas();  // Refresca la lista de marcas
+      setMessage("Marca eliminada exitosamente.");
     } catch (error) {
-      console.error("Error al eliminar el accesorio:", error);
-      setMessage("Error al eliminar el accesorio: " + error.message);
+      console.error("Error al eliminar la marca:", error);
+      setMessage("Error al eliminar la marca: " + error.message);
     }
   };
 
@@ -108,13 +108,13 @@ const Accesorios = () => {
     <div className="container">
       {isAdmin ? (
         <div className="row">
-          {/* Sección para crear/editar accesorios */}
+          {/* Sección para crear/editar marcas */}
           <div className="col-md-6">
-            <h4>{editing ? "Editar accesorio" : "Crear un nuevo accesorio"}</h4>
+            <h4>{editing ? "Editar marca" : "Crear una nueva marca"}</h4>
             <Formik
               enableReinitialize
               initialValues={{
-                nombre: editing ? accesorios.find((a) => a.id === editing).tipo_accesorio : "",
+                nombre: editing ? marcas.find((m) => m.id === editing).nombre : "",
               }}
               validationSchema={ValidationSchema}
               onSubmit={handleGuardar}
@@ -129,7 +129,7 @@ const Accesorios = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.nombre}
-                      placeholder="Ingrese el nombre del accesorio"
+                      placeholder="Ingrese el nombre de la marca"
                     />
                     {errors.nombre && touched.nombre && (
                       <div className="text-danger">{errors.nombre}</div>
@@ -147,28 +147,28 @@ const Accesorios = () => {
             </Formik>
           </div>
 
-          {/* Listado de Accesorios */}
+          {/* Listado de Marcas */}
           <div className="col-md-6">
-            <h4>Listado de Accesorios</h4>
+            <h4>Listado de Marcas</h4>
             <ul className="list-group">
-              {accesorios.length === 0 ? (
-                <li className="list-group-item">No hay accesorios disponibles.</li>
+              {marcas.length === 0 ? (
+                <li className="list-group-item">No hay marcas disponibles.</li>
               ) : (
-                accesorios.map((accesorio) => (
-                  <li key={accesorio.id} className="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{accesorio.tipo_accesorio}</span>
+                marcas.map((marca) => (
+                  <li key={marca.id} className="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{marca.nombre}</span>
                     <div>
                       <Button
                         label="Editar"
                         icon="pi pi-pencil"
                         className="p-button-warning p-button-sm me-2"
-                        onClick={() => handleEditar(accesorio.id)}
+                        onClick={() => handleEditar(marca.id)}
                       />
                       <Button
                         label="Eliminar"
                         icon="pi pi-trash"
                         className="p-button-danger p-button-sm"
-                        onClick={() => handleEliminar(accesorio.id)}
+                        onClick={() => handleEliminar(marca.id)}
                       />
                     </div>
                   </li>
@@ -178,11 +178,12 @@ const Accesorios = () => {
           </div>
         </div>
       ) : (
-        <p>No estás autorizado para gestionar accesorios.</p>
+        <p>No estás autorizado para gestionar marcas.</p>
       )}
       {message && <div className="alert alert-info mt-3">{message}</div>}
     </div>
   );
 };
 
-export default Accesorios;
+export default Marcas;
+

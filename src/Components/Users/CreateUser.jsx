@@ -47,8 +47,8 @@ const CreateUser = () => {
   // Función para crear o editar un usuario
   const RegisterUser = async (values, { resetForm }) => {
     const bodyRegisterUser = {
-      usuario: values.username,  
-      contrasenia: values.password,  
+      username: values.username,  
+      password: values.password,  
       is_admin: values.is_admin === 1 ? 1 : 0,  
     };
 
