@@ -4,8 +4,7 @@ const Home = () => {
 
     return(
         <Fragment>
-        <h1>Inicio del proyecto</h1>
-        <h1>Práctica con React Router</h1>
+        <h1>Evaluación Final Integradora (EFI) - Práctica Profesionalizante I - JavaScript</h1>
         </Fragment>
     )
 }

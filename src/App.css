@@ -40,3 +40,36 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Personalización para el botón verde */
+.custom-green-button {
+  background-color: #28a745; /* Color verde */
+  border-color: #28a745; /* Bordes del botón */
+}
+
+.custom-green-button:hover {
+  background-color: #218838; /* Color verde más oscuro al hacer hover */
+  border-color: #1e7e34; /* Bordes más oscuros */
+}
+
+/* Personalización para el botón rojo fuerte */
+.custom-red-button {
+  background-color: #dc3545; /* Color rojo fuerte */
+  border-color: #dc3545; /* Bordes del botón */
+}
+
+.custom-red-button:hover {
+  background-color: #c82333; /* Color rojo más oscuro al hacer hover */
+  border-color: #bd2130; /* Bordes más oscuros */
+}
+
+/* Personalización para el botón amarillo suave */
+.custom-soft-yellow-button {
+  background-color: #ffeb3b; /* Amarillo suave */
+  border-color: #ffeb3b; /* Bordes del botón en amarillo suave */
+}
+
+.custom-soft-yellow-button:hover {
+  background-color: #fdd835; /* Amarillo ligeramente más oscuro al hacer hover */
+  border-color: #fbc02d; /* Bordes más oscuros al hacer hover */
+}

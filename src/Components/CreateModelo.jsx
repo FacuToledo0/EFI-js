@@ -3,8 +3,8 @@ import * as Yup from "yup";
 import { useState, useEffect } from "react";
 import { Button } from "primereact/button";
 
-const Accesorios = () => {
-  const [accesorios, setAccesorios] = useState([]);
+const Modelos = () => {
+  const [modelos, setModelos] = useState([]);
   const [editing, setEditing] = useState(null);
   const [message, setMessage] = useState("");
   const token = localStorage.getItem("token");
@@ -18,89 +18,87 @@ const Accesorios = () => {
       .max(50, "No debe ser mayor a 50 caracteres"),
   });
 
-  // Función para obtener los accesorios
-  const fetchAccesorios = async () => {
+  // Función para obtener los modelos
+  const fetchModelos = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/accesorio_list", {
+      const response = await fetch("http://127.0.0.1:5000/modelo_list", {
         method: "GET",
-        headers: { Authorization: `Bearer ${token}` }, // Token de autorización
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.Mensaje || "Error desconocido al obtener los accesorios");
+        throw new Error(errorData.Mensaje || "Error desconocido al obtener los modelos");
       }
 
       const data = await response.json();
-      setAccesorios(data.accesorios);
+      setModelos(data.modelos);
     } catch (error) {
-      console.error("Error al obtener los accesorios:", error);
-      setMessage("Error al obtener accesorios: " + error.message); // Mostrar error
+      console.error("Error al obtener los modelos:", error);
+      setMessage("Error al obtener modelos: " + error.message);
     }
   };
 
   useEffect(() => {
-    fetchAccesorios();
+    fetchModelos();
   }, []);
 
-  // Función para guardar o editar un accesorio
+  // Función para guardar o editar un modelo
   const handleGuardar = async (values, { resetForm }) => {
     try {
       const url = editing
-        ? `http://127.0.0.1:5000/accesorio/${editing}/editar`  // Edición
-        : "http://127.0.0.1:5000/accesorio";  // Creación
+        ? `http://127.0.0.1:5000/modelo/${editing}/editar`  // Edición
+        : "http://127.0.0.1:5000/modelo";  // Creación
 
       const method = editing ? "PUT" : "POST";
 
-      // Enviamos el nombre del accesorio como tipo_accesorio
       const response = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,  // Asegúrate de pasar el token correctamente
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ tipo_accesorio: values.nombre }),  // Usamos 'tipo_accesorio' para coincidir con el backend
+        body: JSON.stringify({ nombre: values.nombre }),  // Usamos 'nombre' para coincidir con el backend
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.Mensaje || "Error desconocido al guardar el accesorio");
+        throw new Error(errorData.Mensaje || "Error desconocido al guardar el modelo");
       }
 
-      // Limpiar el formulario y actualizar la lista de accesorios
       setEditing(null);
-      fetchAccesorios();  // Refresca la lista
+      fetchModelos();
       resetForm();
-      setMessage("Accesorio guardado exitosamente.");
+      setMessage("Modelo guardado exitosamente.");
     } catch (error) {
-      console.error("Error al guardar el accesorio:", error);
-      setMessage("Error al guardar el accesorio: " + error.message);  // Mostrar mensaje de error
+      console.error("Error al guardar el modelo:", error);
+      setMessage("Error al guardar el modelo: " + error.message);
     }
   };
 
-  // Función para editar un accesorio
+  // Función para editar un modelo
   const handleEditar = (id) => {
     setEditing(id);
   };
 
-  // Función para eliminar un accesorio
+  // Función para eliminar un modelo
   const handleEliminar = async (id) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/accesorio/${id}/borrar`, {
+      const response = await fetch(`http://127.0.0.1:5000/modelo/${id}/delete`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },  // Token de autorización
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.Mensaje || "Error al eliminar accesorio");
+        throw new Error(errorData.Mensaje || "Error al eliminar modelo");
       }
 
-      fetchAccesorios();  // Refresca la lista de accesorios
-      setMessage("Accesorio eliminado exitosamente.");
+      fetchModelos();
+      setMessage("Modelo eliminado exitosamente.");
     } catch (error) {
-      console.error("Error al eliminar el accesorio:", error);
-      setMessage("Error al eliminar el accesorio: " + error.message);
+      console.error("Error al eliminar el modelo:", error);
+      setMessage("Error al eliminar el modelo: " + error.message);
     }
   };
 
@@ -108,13 +106,13 @@ const Accesorios = () => {
     <div className="container">
       {isAdmin ? (
         <div className="row">
-          {/* Sección para crear/editar accesorios */}
+          {/* Sección para crear/editar modelos */}
           <div className="col-md-6">
-            <h4>{editing ? "Editar accesorio" : "Crear un nuevo accesorio"}</h4>
+            <h4>{editing ? "Editar modelo" : "Crear un nuevo modelo"}</h4>
             <Formik
               enableReinitialize
               initialValues={{
-                nombre: editing ? accesorios.find((a) => a.id === editing).tipo_accesorio : "",
+                nombre: editing ? modelos.find((m) => m.id === editing).nombre : "",
               }}
               validationSchema={ValidationSchema}
               onSubmit={handleGuardar}
@@ -129,7 +127,7 @@ const Accesorios = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.nombre}
-                      placeholder="Ingrese el nombre del accesorio"
+                      placeholder="Ingrese el nombre del modelo"
                     />
                     {errors.nombre && touched.nombre && (
                       <div className="text-danger">{errors.nombre}</div>
@@ -147,28 +145,28 @@ const Accesorios = () => {
             </Formik>
           </div>
 
-          {/* Listado de Accesorios */}
+          {/* Listado de Modelos */}
           <div className="col-md-6">
-            <h4>Listado de Accesorios</h4>
+            <h4>Listado de Modelos</h4>
             <ul className="list-group">
-              {accesorios.length === 0 ? (
-                <li className="list-group-item">No hay accesorios disponibles.</li>
+              {modelos.length === 0 ? (
+                <li className="list-group-item">No hay modelos disponibles.</li>
               ) : (
-                accesorios.map((accesorio) => (
-                  <li key={accesorio.id} className="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{accesorio.tipo_accesorio}</span>
+                modelos.map((modelo) => (
+                  <li key={modelo.id} className="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{modelo.nombre}</span>
                     <div>
                       <Button
                         label="Editar"
                         icon="pi pi-pencil"
                         className="custom-soft-yellow-button"
-                        onClick={() => handleEditar(accesorio.id)}
+                        onClick={() => handleEditar(modelo.id)}
                       />
                       <Button
                         label="Eliminar"
                         icon="pi pi-trash"
                         className="custom-red-button"
-                        onClick={() => handleEliminar(accesorio.id)}
+                        onClick={() => handleEliminar(modelo.id)}
                       />
                     </div>
                   </li>
@@ -178,11 +176,11 @@ const Accesorios = () => {
           </div>
         </div>
       ) : (
-        <p>No estás autorizado para gestionar accesorios.</p>
+        <p>No estás autorizado para gestionar modelos.</p>
       )}
       {message && <div className="alert alert-info mt-3">{message}</div>}
     </div>
   );
 };
 
-export default Accesorios;
+export default Modelos;

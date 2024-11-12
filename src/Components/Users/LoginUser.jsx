@@ -49,7 +49,7 @@ const LoginUser = () => {
         <div className="mb-3">
           <input type="password" name="password" placeholder="Contraseña" required />
         </div>
-        <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
+        <button type="submit" className="custom-green-button">Iniciar Sesión</button>
       </form>
       {message && <div className="alert alert-info mt-3">{message}</div>}
     </div>

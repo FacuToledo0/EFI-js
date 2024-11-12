@@ -191,7 +191,7 @@ const CreateUser = () => {
                   icon="pi pi-check"
                   type="submit"
                   disabled={!isValid}
-                  className="p-button-success"
+                  className="custom-green-button"
                 />
               </form>
             )}
@@ -206,13 +206,13 @@ const CreateUser = () => {
                 <span>{user.username} - {user.is_admin === 1 ? "Administrador" : "Usuario"}</span>
                 <Button
                   icon="pi pi-pencil"
-                  className="p-button-warning p-button-sm me-2"
+                  className="custom-soft-yellow-button"
                   onClick={() => handleEditar(user.id)}
                   label="Editar"
                 />
                 <Button
                   icon="pi pi-trash"
-                  className="p-button-danger p-button-sm"
+                  className="custom-red-button"
                   onClick={() => handleEliminar(user.id)} // Pasamos correctamente el id
                   label="Eliminar"
                 />

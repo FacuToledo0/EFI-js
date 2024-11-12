@@ -138,7 +138,7 @@ const Marcas = () => {
                   <Button
                     label={editing ? "Actualizar" : "Guardar"}
                     icon="pi pi-check"
-                    className="p-button-success"
+                    className="custom-green-button"
                     disabled={!isValid}
                     type="submit"
                   />
@@ -161,13 +161,13 @@ const Marcas = () => {
                       <Button
                         label="Editar"
                         icon="pi pi-pencil"
-                        className="p-button-warning p-button-sm me-2"
+                        className="custom-soft-yellow-button"
                         onClick={() => handleEditar(marca.id)}
                       />
                       <Button
                         label="Eliminar"
                         icon="pi pi-trash"
-                        className="p-button-danger p-button-sm"
+                        className="custom-red-button"
                         onClick={() => handleEliminar(marca.id)}
                       />
                     </div>
